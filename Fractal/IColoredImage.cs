@@ -1,7 +1,4 @@
-﻿using Fractal.Entities;
-using Fractal.ValueObjects;
-
-namespace Fractal.Abstractions;
+﻿namespace Fractal;
 
 public interface IColoredImage
 {

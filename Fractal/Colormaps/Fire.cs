@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Fractal.Abstractions;
-using Fractal.ValueObjects;
 
-namespace Fractal.Entities.ColoredImages;
+namespace Fractal.Colormaps;
 
 public class Fire: IColoredImage
 {

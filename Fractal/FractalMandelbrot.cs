@@ -1,10 +1,8 @@
-﻿using Fractal.Abstractions;
-using Fractal.ValueObjects;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace Fractal.Entities.Base;
+namespace Fractal;
 
 /// <summary>
 /// Базовый класс фрактала, по умолчанию фрактал Мандельброта, 

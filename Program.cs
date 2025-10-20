@@ -1,9 +1,6 @@
 ﻿using Fractal;
-using Fractal.Abstractions;
-using Fractal.Entities;
-using Fractal.Entities.Base;
-using Fractal.Entities.ColoredImages;
-using Fractal.Entities.Writers;
+using Fractal.Colormaps;
+using Fractal.Writers;
 
 internal class Program
 {

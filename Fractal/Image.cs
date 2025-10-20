@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using Fractal.ValueObjects;
 
-namespace Fractal.Entities;
+namespace Fractal;
 
 public class Image
 {

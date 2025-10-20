@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace Fractal.Entities.Writers;
+namespace Fractal.Writers;
 
 public class PPMWriter
 {
