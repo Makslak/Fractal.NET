@@ -1,5 +1,4 @@
 ﻿using Fractal.Abstractions;
-using Fractal.Constants;
 using Fractal.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -11,17 +10,24 @@ namespace Fractal.Entities.Base;
 /// Базовый класс фрактала, по умолчанию фрактал Мандельброта, 
 /// в случае необходимости все нужные методы переопределяются в наследниках
 /// </summary>
-public abstract class BaseFractal : IFractal
+class FractalMandelbrot : IFractal
 {
-    protected double Threshold { get; set; } = FractalConstants.MandelbrotConstants.DefaultThreshold;
-    protected ImageBox DefaultGeneratingBox { get; set; } = FractalConstants.MandelbrotConstants.DefaultMandelbrotImageBox;
+    // internal readonly Box2D box;
+    public readonly Box2D box = new Box2D()
+    {
+        Xmax = 1.25M,
+        Xmin = -2.25M,
+        Ymax = 1.75M,
+        Ymin = -1.75M,
+    };
+
     protected virtual Func<Complex, Complex, Complex> Z() =>
         (z0, c) => z0 * z0 + c;
 
-    public virtual FractalData Generate(ImageBox? box, int? maxIterations) 
+    public virtual FractalData Generate(ImageBox imageBox, int? maxIterations) 
     {
-        var maxIter = maxIterations ?? FractalConstants.MaxIteration;
-        var imageBox = box ?? DefaultGeneratingBox;
+        const int MaxIteration = 300; // Перенести потом в лучшее место!
+        var maxIter = maxIterations ?? MaxIteration;
         Box2D computingBox = imageBox.Box;
         var z0 = new Complex(0,0);
         var z = z0;
@@ -47,7 +53,7 @@ public abstract class BaseFractal : IFractal
                 z = z0;
                 int iter = 0;
 
-                while (iter < maxIter && z.Magnitude <= FractalConstants.MandelbrotConstants.DefaultThreshold)
+                while (iter < maxIter && z.Magnitude <= 2.0)
                 {
                     z = Z().Invoke(z, c);
                     iter++;
