@@ -85,11 +85,9 @@ namespace FractalViewer
         {
             if (_dragStart == null) return;
 
-            // координаты в системе Image
             Point p0Prev = ClampToImage(_dragStart.Value);
             Point p1Prev = ClampToImage(e.GetPosition(Preview));
 
-            // переводим в систему Canvas для отрисовки
             Point p0 = Preview.TranslatePoint(p0Prev, SelectionCanvas);
             Point p1 = Preview.TranslatePoint(p1Prev, SelectionCanvas);
 
@@ -109,7 +107,6 @@ namespace FractalViewer
             if (_dragStart == null) return;
             PreviewHost.ReleaseMouseCapture();
 
-            // точки в системе Image
             Point p0 = _dragStart.Value;
             Point p1 = e.GetPosition(Preview);
             _dragStart = null;
@@ -147,8 +144,8 @@ namespace FractalViewer
             int selH = maxY - minY + 1;
             if (selW <= 0 || selH <= 0) return;
 
-            double target = (double)imgW / imgH;     // целевое соотношение
-            double selAR = (double)selW / selH;     // текущее соотношение
+            double target = (double)imgW / imgH;
+            double selAR = (double)selW / selH;
             int cx = (minX + maxX) / 2;
             int cy = (minY + maxY) / 2;
 
@@ -156,18 +153,15 @@ namespace FractalViewer
 
             if (selAR < target)
             {
-                // слишком "высокое" — наращиваем ширину
                 newW = (int)Math.Round(target * selH);
                 if (newW > imgW) { newW = imgW; newH = (int)Math.Round(newW / target); }
             }
             else if (selAR > target)
             {
-                // слишком "широкое" — наращиваем высоту
                 newH = (int)Math.Round(selW / target);
                 if (newH > imgH) { newH = imgH; newW = (int)Math.Round(newH * target); }
             }
 
-            // центрируем и вписываем в границы
             int nx0 = cx - newW / 2;
             int ny0 = cy - newH / 2;
             int nx1 = nx0 + newW - 1;

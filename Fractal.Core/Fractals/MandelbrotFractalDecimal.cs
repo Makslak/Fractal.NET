@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 
 namespace Fractal
 {
-    /// <summary>Мандельброт с итерациями на decimal (медленнее, но десятичная арифметика).</summary>
     public class MandelbrotFractalDecimal : IFractal
     {
         public Box2D Box { get; private set; } = new Box2D
@@ -19,7 +18,6 @@ namespace Fractal
             const int DefaultMaxIteration = 300;
             int maxIter = maxIterations.HasValue ? maxIterations.Value : DefaultMaxIteration;
 
-            // Берём границы сразу в decimal
             decimal xMin = imageBox.Box.Xmin;
             decimal xMax = imageBox.Box.Xmax;
             decimal yMin = imageBox.Box.Ymin;
@@ -31,13 +29,12 @@ namespace Fractal
             decimal xStep = (w > 1) ? (xMax - xMin) / (w - 1) : 0m;
             decimal yStep = (h > 1) ? (yMax - yMin) / (h - 1) : 0m;
 
-            // Пишем в зубчатый массив построчно (под Parallel.For)
             int[][] rows = new int[h][];
             for (int y = 0; y < h; y++) rows[y] = new int[w];
 
             Parallel.For(0, h, yIndex =>
             {
-                decimal cy = yMax - yIndex * yStep;   // сверху вниз
+                decimal cy = yMax - yIndex * yStep;   
                 int[] row = rows[yIndex];
 
                 for (int xIndex = 0; xIndex < w; xIndex++)
@@ -47,7 +44,6 @@ namespace Fractal
                     decimal zr = 0m, zi = 0m;
                     int iter = 0;
 
-                    // z = z^2 + c; escape radius: |z|^2 > 4
                     while (iter < maxIter)
                     {
                         decimal zr2 = zr * zr;
@@ -66,7 +62,6 @@ namespace Fractal
                 }
             });
 
-            // Конверсия в List<List<int>> для совместимости
             var counts = new List<List<int>>(h);
             for (int y = 0; y < h; y++)
             {

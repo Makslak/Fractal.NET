@@ -3,14 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Fractal;               // Box2D, IFractal, ImageBox, Mandelbrot..., BurningShip...
-using Fractal.Colormaps;     // GrayScale, Fire, Viridis
+using Fractal;            
+using Fractal.Colormaps;    
 
 namespace FractalViewer.Services
 {
     public class RenderService
     {
-        // ---------- Выбор палитры ----------
         private static IColoredImage CreateColormap(string name)
         {
             if (!string.IsNullOrEmpty(name))
@@ -20,11 +19,9 @@ namespace FractalViewer.Services
                 if (n.Equals("Fire", StringComparison.OrdinalIgnoreCase)) return new Fire();
                 if (n.Equals("Viridis", StringComparison.OrdinalIgnoreCase)) return new Viridis();
             }
-            // По умолчанию — серый градиент
             return new GrayScale();
         }
 
-        // ---------- Выбор фрактала ----------
         private static IFractal CreateFractal(string name, bool useDecimal)
         {
             var n = (name ?? string.Empty).Trim().ToLowerInvariant();
@@ -44,22 +41,18 @@ namespace FractalViewer.Services
             if (f is MandelbrotFractalDecimal md) return md.Box;
             if (f is BurningShipFractal bs) return bs.Box;
             if (f is BurningShipFractalDecimal bsd) return bsd.Box;
-            // запасной вариант
             return new Box2D { Xmin = -2m, Xmax = 1m, Ymin = -1.5m, Ymax = 1.5m };
         }
 
-        // ---------- Совместимая старая сигнатура (без флага decimal) ----------
         public Task<BitmapSource> RenderAsync(
             string fractalName, string colormapName,
             int width, int height, int maxIterations,
             CancellationToken ct,
             Box2D boxOverride = null)
         {
-            // По умолчанию считаем на double (быстрее)
             return RenderAsync(fractalName, colormapName, width, height, maxIterations, false, ct, boxOverride);
         }
 
-        // ---------- Новая сигнатура с флагом точности ----------
         public Task<BitmapSource> RenderAsync(
             string fractalName, string colormapName,
             int width, int height, int maxIterations,
@@ -71,19 +64,15 @@ namespace FractalViewer.Services
             {
                 ct.ThrowIfCancellationRequested();
 
-                // 1) Фрактал и область кадра
                 var fractal = CreateFractal(fractalName, useDecimal);
                 Box2D box = (boxOverride != null) ? boxOverride : GetDefaultBox(fractal);
 
-                // 2) Подсчёт итераций
                 var data = fractal.Generate(new ImageBox(width, height, box), maxIterations);
                 ct.ThrowIfCancellationRequested();
 
-                // 3) Раскраска
                 var cmap = CreateColormap(colormapName);
                 var image = cmap.Create(data);
 
-                // 4) Перенос в WriteableBitmap (BGRA32)
                 var wb = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgra32, null);
                 int stride = width * 4;
                 byte[] buffer = new byte[stride * height];
@@ -95,15 +84,15 @@ namespace FractalViewer.Services
                     for (int x = 0; x < width; x++)
                     {
                         var p = row[x];
-                        buffer[o + x * 4 + 0] = p.B; // B
-                        buffer[o + x * 4 + 1] = p.G; // G
-                        buffer[o + x * 4 + 2] = p.R; // R
-                        buffer[o + x * 4 + 3] = 255; // A
+                        buffer[o + x * 4 + 0] = p.B; 
+                        buffer[o + x * 4 + 1] = p.G; 
+                        buffer[o + x * 4 + 2] = p.R; 
+                        buffer[o + x * 4 + 3] = 255; 
                     }
                 }
 
                 wb.WritePixels(new System.Windows.Int32Rect(0, 0, width, height), buffer, stride, 0);
-                wb.Freeze(); // можно безопасно отдавать в UI-поток
+                wb.Freeze(); 
                 return (BitmapSource)wb;
             }, ct);
         }

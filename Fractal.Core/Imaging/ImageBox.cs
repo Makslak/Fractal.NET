@@ -1,6 +1,5 @@
 ﻿namespace Fractal
 {
-    /// <summary>Параметры растрового экрана и комплексного бокса.</summary>
     public class ImageBox
     {
         public int Width { get; private set; }

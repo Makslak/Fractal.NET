@@ -1,6 +1,5 @@
 ﻿namespace Fractal
 {
-    /// <summary>Прямоугольная область (xMin..xMax, yMin..yMax) в комплексной плоскости.</summary>
     public class Box2D
     {
         public decimal Xmin { get; set; }

@@ -11,14 +11,12 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Window.Resources>
 
-    <!-- ВНИМАНИЕ: у Window РОВНО ОДИН дочерний элемент — этот Grid -->
     <Grid Margin="16">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="360"/>
         </Grid.ColumnDefinitions>
 
-        <!-- ЛЕВАЯ ПАНЕЛЬ: превью + выделение -->
         <Border Grid.Column="0" Background="{StaticResource BgCard}" CornerRadius="12" Padding="8" Margin="0,0,16,0">
             <Grid x:Name="PreviewHost">
                 <Image x:Name="Preview" Source="{Binding PreviewImage}" Stretch="Uniform"/>
@@ -27,7 +25,6 @@
                            HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,8,0,0"
                            IsHitTestVisible="False"/>
 
-                <!-- Оверлей выделения -->
                 <Canvas x:Name="SelectionCanvas"
                         Background="Transparent"
                         HorizontalAlignment="Stretch"
@@ -37,7 +34,6 @@
                                Fill="#40FFFFFF" RadiusX="6" RadiusY="6"/>
                 </Canvas>
 
-                <!-- Полупрозрачная кнопка "Назад" поверх превью -->
                 <Button x:Name="BackButton"
         Content="← Назад"
         Command="{Binding BackCommand}"
@@ -69,7 +65,6 @@
             </Grid>
         </Border>
 
-        <!-- ПРАВАЯ ПАНЕЛЬ: параметры -->
         <Border Grid.Column="1" Background="{StaticResource BgCard}" CornerRadius="12" Padding="12">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel>
@@ -80,25 +75,19 @@
                     <ItemsControl ItemsSource="{Binding Colormaps}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <!-- цветовая плашка -->
                                 <Grid Margin="0,6,0,0">
-                                    <!-- фон-градиент -->
                                     <Border CornerRadius="10" Padding="10"
                                             Background="{Binding Converter={StaticResource ColormapToBrush}}"/>
 
-                                    <!-- название поверх (всегда видно) -->
                                     <TextBlock Text="{Binding}" Margin="14,8"
                                                FontWeight="SemiBold"
                                                Foreground="{StaticResource TextPrimary}"
                                                IsHitTestVisible="False"/>
 
-                                    <!-- РАМКА выделения (НЕ заливка) -->
                                     <Border CornerRadius="10" BorderThickness="3" IsHitTestVisible="False">
                                         <Border.BorderBrush>
                                             <MultiBinding Converter="{StaticResource EqBrush}">
-                                                <!-- SelectedColormap из VM -->
                                                 <Binding Path="DataContext.SelectedColormap" RelativeSource="{RelativeSource AncestorType=Window}"/>
-                                                <!-- Текущий элемент (строка) -->
                                                 <Binding/>
                                             </MultiBinding>
                                         </Border.BorderBrush>
@@ -107,7 +96,6 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
 
-                        <!-- клики по плашкам -->
                         <ItemsControl.ItemContainerStyle>
                             <Style TargetType="ContentPresenter">
                                 <EventSetter Event="MouseLeftButtonUp" Handler="PaletteItem_Click"/>
@@ -118,7 +106,6 @@
                     <TextBlock Text="Итерации" FontWeight="SemiBold" Margin="0,16,0,8"/>
                     <TextBox Text="{Binding Iterations, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <!-- тумблер double/decimal -->
                     <CheckBox Content="Использовать decimal (медленнее)"
                               IsChecked="{Binding UseDecimalIterations}"
                               Margin="0,8,0,0"/>

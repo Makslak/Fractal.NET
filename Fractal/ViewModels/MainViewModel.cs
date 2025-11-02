@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using Fractal;                     // Box2D, MandelbrotFractal, BurningShipFractal, ...
+using Fractal;                
 using FractalViewer.Services;
 
 namespace FractalViewer.ViewModels
@@ -16,14 +16,12 @@ namespace FractalViewer.ViewModels
         private readonly RenderService _render;
         private CancellationTokenSource _cts;
 
-        // ---------- списки для UI ----------
         public ObservableCollection<string> FractalTypes { get; private set; } =
             new ObservableCollection<string> { "Мандельброт", "Корабль (Burning Ship)" };
 
         public ObservableCollection<string> Colormaps { get; private set; } =
             new ObservableCollection<string> { "Greys", "Fire", "Viridis" };
 
-        // ---------- выбранные опции ----------
         private string _selectedFractal;
         public string SelectedFractal
         {
@@ -34,7 +32,6 @@ namespace FractalViewer.ViewModels
                 _selectedFractal = value;
                 OnPropertyChanged("SelectedFractal");
 
-                // при смене типа фрактала сбрасываем область к дефолтной и чистим историю
                 SetDefaultBoxForCurrentFractal();
                 _history.Clear();
                 OnPropertyChanged("CanGoBack");
@@ -48,7 +45,7 @@ namespace FractalViewer.ViewModels
             set { if (_selectedColormap != value) { _selectedColormap = value; OnPropertyChanged("SelectedColormap"); } }
         }
 
-        private bool _useDecimalIterations; // галочка double/decimal
+        private bool _useDecimalIterations;
         public bool UseDecimalIterations
         {
             get { return _useDecimalIterations; }
@@ -57,7 +54,6 @@ namespace FractalViewer.ViewModels
                 if (_useDecimalIterations == value) return;
                 _useDecimalIterations = value;
                 OnPropertyChanged("UseDecimalIterations");
-                // область не меняем — координаты decimal остаются валидными для double и наоборот
             }
         }
 
@@ -100,12 +96,10 @@ namespace FractalViewer.ViewModels
             private set { _isBusy = value; OnPropertyChanged("IsBusy"); }
         }
 
-        // ---------- область и история для «Назад» ----------
         private Box2D _currentBox;
         private readonly Stack<Box2D> _history = new Stack<Box2D>();
         public bool CanGoBack { get { return _history.Count > 0; } }
 
-        // ---------- команды ----------
         public ICommand ApplyCommand { get; private set; }
         public ICommand ResetCommand { get; private set; }
         public ICommand BackCommand { get; private set; }
@@ -125,7 +119,6 @@ namespace FractalViewer.ViewModels
             BackCommand = new AsyncRelayCommand(BackAsync);
         }
 
-        // ---------- рендер ----------
         private async Task ApplyAsync()
         {
             Cancel();
@@ -150,7 +143,6 @@ namespace FractalViewer.ViewModels
                 _cts.Cancel();
         }
 
-        // ---------- zoom из пикселей ----------
         public async Task ZoomToPixelsAsync(int x0, int y0, int x1, int y1, int imgW, int imgH)
         {
             if (imgW <= 1 || imgH <= 1) return;
@@ -158,7 +150,6 @@ namespace FractalViewer.ViewModels
             if (x0 > x1) { int t = x0; x0 = x1; x1 = t; }
             if (y0 > y1) { int t = y0; y0 = y1; y1 = t; }
 
-            // сохраняем текущую область для кнопки "Назад"
             _history.Push(new Box2D { Xmin = _currentBox.Xmin, Xmax = _currentBox.Xmax, Ymin = _currentBox.Ymin, Ymax = _currentBox.Ymax });
             OnPropertyChanged("CanGoBack");
 
@@ -172,7 +163,7 @@ namespace FractalViewer.ViewModels
 
             decimal newXmin = _currentBox.Xmin + u0 * xRange;
             decimal newXmax = _currentBox.Xmin + u1 * xRange;
-            decimal newYmax = _currentBox.Ymax - v0 * yRange; // инверсия Y
+            decimal newYmax = _currentBox.Ymax - v0 * yRange;
             decimal newYmin = _currentBox.Ymax - v1 * yRange;
 
             _currentBox = new Box2D { Xmin = newXmin, Xmax = newXmax, Ymin = newYmin, Ymax = newYmax };
@@ -180,7 +171,6 @@ namespace FractalViewer.ViewModels
             await ApplyAsync();
         }
 
-        // ---------- Назад ----------
         private async Task BackAsync()
         {
             if (_history.Count == 0) return;
@@ -189,24 +179,18 @@ namespace FractalViewer.ViewModels
             await ApplyAsync();
         }
 
-        // ---------- Reset ----------
         private void Reset()
         {
             Iterations = 300;
             Width = 960;
             Height = 960;
-            SelectedFractal = SelectedFractal; // setter сам выставит box и очистит историю
+            SelectedFractal = SelectedFractal;
             SelectedColormap = SelectedColormap;
             UseDecimalIterations = false;
-
-            // т.к. SelectedFractal setter уже сбросил _currentBox и историю,
-            // здесь ничего больше делать не нужно.
         }
 
-        // ---------- дефолтная область для текущего выбора ----------
         private void SetDefaultBoxForCurrentFractal()
         {
-            // Выбираем класс по названию фрактала
             string n = (_selectedFractal ?? "").ToLowerInvariant();
             bool isShip = n.Contains("ship") || n.Contains("кораб");
 
@@ -238,7 +222,6 @@ namespace FractalViewer.ViewModels
             }
         }
 
-        // ---------- INotifyPropertyChanged ----------
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string name)
         {

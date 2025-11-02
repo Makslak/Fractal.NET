@@ -4,7 +4,6 @@ using System.Numerics;
 
 namespace Fractal
 {
-    /// <summary>Фрактал Мандельброта.</summary>
     public class MandelbrotFractal : IFractal
     {
         public Box2D Box { get; private set; } = new Box2D
@@ -25,7 +24,6 @@ namespace Fractal
             const int DefaultMaxIteration = 300;
             int maxIter = maxIterations.HasValue ? maxIterations.Value : DefaultMaxIteration;
 
-            // Границы в double (чтобы не кастовать в цикле)
             double xMin = (double)imageBox.Box.Xmin;
             double xMax = (double)imageBox.Box.Xmax;
             double yMin = (double)imageBox.Box.Ymin;
@@ -37,13 +35,12 @@ namespace Fractal
             double xStep = (xMax - xMin) / (w - 1);
             double yStep = (yMax - yMin) / (h - 1);
 
-            // Массивы под параллельную запись
             int[][] rows = new int[h][];
             for (int y = 0; y < h; y++) rows[y] = new int[w];
 
             System.Threading.Tasks.Parallel.For(0, h, yIndex =>
             {
-                double cy = yMax - yIndex * yStep;  // сверху вниз
+                double cy = yMax - yIndex * yStep;
                 int[] row = rows[yIndex];
 
                 for (int xIndex = 0; xIndex < w; xIndex++)
@@ -53,7 +50,6 @@ namespace Fractal
                     double zr = 0.0, zi = 0.0;
                     int iter = 0;
 
-                    // z = z^2 + c; escape radius 2 => r^2 <= 4
                     while (iter < maxIter)
                     {
                         double zr2 = zr * zr;
@@ -72,7 +68,6 @@ namespace Fractal
                 }
             });
 
-            // Перегоняем в List<List<int>> для совместимости с остальным кодом
             var counts = new System.Collections.Generic.List<System.Collections.Generic.List<int>>(h);
             for (int y = 0; y < h; y++)
             {

@@ -2,19 +2,16 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-	<!-- базовые -->
 	<SolidColorBrush x:Key="BgWindow"    Color="#0B0C10"/>
 	<SolidColorBrush x:Key="BgCard"      Color="#11131A"/>
 	<SolidColorBrush x:Key="Accent"      Color="#5661F6"/>
 	<SolidColorBrush x:Key="TextPrimary" Color="#F5F7FF"/>
 	<SolidColorBrush x:Key="TextMuted"   Color="#99A2B2"/>
 
-	<!-- для контролов -->
 	<SolidColorBrush x:Key="ControlBg"     Color="#1A1D26"/>
 	<SolidColorBrush x:Key="ControlBorder" Color="#2A2F3A"/>
 	<SolidColorBrush x:Key="ControlHover"  Color="#252A36"/>
 
-	<!-- состояния -->
 	<SolidColorBrush x:Key="DisabledBg" Color="#1C1F28"/>
 	<SolidColorBrush x:Key="DisabledFg" Color="#6B7280"/>
 	<SolidColorBrush x:Key="SelectionFg" Color="#FFFFFF"/>

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 
 namespace Fractal
 {
-    /// <summary>Фрактал "Burning Ship" на decimal (медленнее, но десятичная арифметика).</summary>
     public class BurningShipFractalDecimal : IFractal
     {
         public Box2D Box { get; private set; } = new Box2D

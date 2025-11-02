@@ -2,7 +2,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-	<!-- Карточка и текст -->
 	<Style x:Key="Card" TargetType="Border">
 		<Setter Property="Background" Value="{StaticResource BgCard}"/>
 		<Setter Property="CornerRadius" Value="12"/>
@@ -19,7 +18,6 @@
 		<Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
 	</Style>
 
-	<!-- Button: тёмная тема + правильный Disabled -->
 	<Style TargetType="Button">
 		<Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
 		<Setter Property="Background" Value="{StaticResource Accent}"/>
@@ -55,7 +53,6 @@
 		</Setter>
 	</Style>
 
-	<!-- Вторичная кнопка (по желанию) -->
 	<Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
 		<Setter Property="Background" Value="{StaticResource ControlBg}"/>
 		<Setter Property="BorderBrush" Value="{StaticResource ControlBorder}"/>
@@ -87,7 +84,6 @@
 		</Setter>
 	</Style>
 
-	<!-- CHECKBOX: скруглённый бокс с галочкой, в стиле приложения -->
 	<Style TargetType="CheckBox">
 		<Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
 		<Setter Property="FontWeight" Value="Normal"/>
@@ -95,7 +91,6 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="CheckBox">
 					<StackPanel Orientation="Horizontal">
-						<!-- сам квадрат чекбокса -->
 						<Border x:Name="Box"
 								Width="20" Height="20"
 								CornerRadius="6"
@@ -103,7 +98,6 @@
 								BorderBrush="{StaticResource ControlBorder}"
 								BorderThickness="1"
 								Margin="0,0,8,0">
-							<!-- галочка -->
 							<Path x:Name="Mark" Data="M 3 10 L 8 15 L 17 5"
 								  Stroke="{StaticResource SelectionFg}"
 								  StrokeThickness="2.2"
@@ -113,7 +107,6 @@
 								  Visibility="Collapsed"/>
 						</Border>
 
-						<!-- подпись -->
 						<ContentPresenter VerticalAlignment="Center"
 										  RecognizesAccessKey="True"/>
 					</StackPanel>
@@ -141,7 +134,6 @@
 		</Setter>
 	</Style>
 
-	<!-- TEXTBOX: тёмный, скругления, акцентная рамка при фокусе -->
 	<Style TargetType="TextBox">
 		<Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
 		<Setter Property="Background" Value="{StaticResource ControlBg}"/>
@@ -179,12 +171,10 @@
 		</Setter>
 	</Style>
 
-	<!-- Невидимый переключатель для ComboBox -->
 	<ControlTemplate x:Key="ComboToggleBlank" TargetType="ToggleButton">
 		<Border Background="Transparent" BorderThickness="0"/>
 	</ControlTemplate>
 
-	<!-- ComboBox: ровный бокс + рабочее выпадение -->
 	<Style TargetType="ComboBox">
 		<Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
 		<Setter Property="Background" Value="{StaticResource ControlBg}"/>
@@ -196,7 +186,6 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="ComboBox">
 					<Grid>
-						<!-- закрытая часть -->
 						<Border x:Name="Box"
 								Background="{TemplateBinding Background}"
 								BorderBrush="{TemplateBinding BorderBrush}"
@@ -207,13 +196,11 @@
 										  HorizontalAlignment="Left"
 										  Content="{TemplateBinding SelectionBoxItem}"/>
 
-						<!-- стрелка -->
 						<Path Data="M0,0 L5,5 10,0 Z"
 							  Fill="{StaticResource TextMuted}"
 							  HorizontalAlignment="Right" VerticalAlignment="Center"
 							  Margin="0,0,12,0"/>
 
-						<!-- выпадающий -->
 						<Popup x:Name="PART_Popup"
 							   Placement="Bottom"
 							   IsOpen="{TemplateBinding IsDropDownOpen}"
@@ -228,7 +215,6 @@
 							</Border>
 						</Popup>
 
-						<!-- невидимая зона клика, которая меняет IsDropDownOpen -->
 						<ToggleButton x:Name="PART_DropDownToggle"
 									  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
 									  Focusable="False"

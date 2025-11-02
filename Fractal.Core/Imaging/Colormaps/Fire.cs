@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Fractal.Colormaps
 {
-    /// <summary>“Огненная” раскраска.</summary>
     public class Fire : IColoredImage
     {
         public Image Create(FractalData value)

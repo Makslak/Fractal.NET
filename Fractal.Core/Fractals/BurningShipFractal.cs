@@ -4,12 +4,10 @@ using System.Threading.Tasks;
 
 namespace Fractal
 {
-    /// <summary>Фрактал "Burning Ship" (быстрая версия на double).</summary>
     public class BurningShipFractal : IFractal
     {
         public Box2D Box { get; private set; } = new Box2D
         {
-            // удачное стартовое окно
             Xmin = -2.2M,
             Xmax = 1.2M,
             Ymin = -2.5M,
@@ -49,7 +47,6 @@ namespace Fractal
 
                     while (iter < maxIter)
                     {
-                        // Burning Ship: z = (|Re(z)| + i|Im(z)|)^2 + c
                         double azr = Math.Abs(zr);
                         double azi = Math.Abs(zi);
 

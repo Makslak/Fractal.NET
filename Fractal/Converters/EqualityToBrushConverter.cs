@@ -5,7 +5,6 @@ using System.Windows.Media;
 
 namespace FractalViewer.Converters
 {
-    /// <summary>Подсветка выбранного “чипа” в списке (MultiBinding: выбранное, текущее).</summary>
     public class EqualityToBrushMultiConverter : IMultiValueConverter
     {
         private static readonly Brush Selected = new SolidColorBrush(Color.FromRgb(32, 38, 58));
